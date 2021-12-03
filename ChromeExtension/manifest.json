@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+  
+    "name": "YouTube-Downloader",
+    "description": "Download YouTube/YouTube Music videos",
+    "version": "1.0",
+
+    "content_scripts" : [{
+      "matches": ["https://music.youtube.com/*", "https://www.youtube.com/*"],
+      "js": ["content.js"]
+    }],
+      
+    "background": {
+      "scripts": ["jquery.js", "background.js"],
+      "persistent": true
+    },
+  
+    "browser_action": {},
+  
+    "permissions": [
+      "http://localhost/*",
+      "tabs",
+      "activeTab"
+    ],
+  
+  
+    "icons": {
+    }
+  
+  }
