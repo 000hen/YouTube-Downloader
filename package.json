@@ -1,0 +1,25 @@
+{
+  "name": "yds",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "t",
+    "start": "node main.js"
+  },
+  "author": "Muisnow",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "ffmpeg-static": "^4.4.0",
+    "ytdl": "^1.4.1",
+    "ytpl": "^2.2.3"
+  },
+  "bin": "main.js",
+  "pkg": {
+    "scripts": [
+      "build/**/*.js",
+      "assents/*"
+    ]
+  }
+}
