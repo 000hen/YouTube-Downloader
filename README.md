@@ -19,4 +19,10 @@ _You can download the executable from the [release page](https://github.com/000h
  2. Click the extension icon in the top right corner (You may need to pin it).
  3. It will download the videos in "videos" folder or the songs in "songs" folder.
 
+## Some of Screenshots
+
+![screen1](https://cdn.discordapp.com/attachments/698551378745884835/916478624809513020/unknown.png)
+![screen2](https://cdn.discordapp.com/attachments/698551378745884835/916479931981111317/unknown.png)
+![screen3](https://cdn.discordapp.com/attachments/698551378745884835/916480115096035338/unknown.png)
+
 ## Enjoy!
