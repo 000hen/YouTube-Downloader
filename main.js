@@ -25,6 +25,7 @@ app.post("/dwn", async (req, res) => {
     var nowdwn = 0;
     var done = 0;
     var unjson = req.body;
+    var errVds = [];
     if (typeof (unjson.videos) === "string") {
         var o = await ytpl(unjson.videos);
         unjson.videos = [];
@@ -58,7 +59,13 @@ app.post("/dwn", async (req, res) => {
                     resolve(true);
                 });
                 stream.on('error', err => {
+                    file.end();
+                    fs.unlinkSync(`songs/${toFilename(title)}.mp3`);
                     console.log(`\x1b[31mDownload ${title} Failed: ${err}\x1b[0m`);
+                    if (errVds.findIndex(e => e === url) === -1) {
+                        unjson.videos.push(url);
+                    }
+                    errVds.push(url);
                     resolve(false);
                 });
             }
