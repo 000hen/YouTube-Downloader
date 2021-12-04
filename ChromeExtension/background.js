@@ -24,5 +24,11 @@ chrome.browserAction.onClicked.addListener((tab) => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.message === 'download') {
+        chrome.tabs.sendMessage(sender.tab.id, {
+            message: 'download'
+        });
+        return;
+    }
     sendToServer(request);
 });
