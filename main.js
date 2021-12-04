@@ -7,6 +7,10 @@ const port = 1524;
 const fs = require('fs');
 const downloadProgessLimit = 10;
 
+if (!fs.existsSync('temp')) {
+    fs.mkdirSync('temp');
+}
+
 if (!fs.existsSync('videos')) {
     fs.mkdirSync('videos');
 }
@@ -29,7 +33,7 @@ app.post("/dwn", async (req, res) => {
         })
     }
 
-    function download(url, id) {
+    function download(url) {
         return new Promise(async (resolve, reject) => {
             var info = await ytdl.getBasicInfo(url);
             var title = info.player_response.videoDetails.title;
@@ -43,12 +47,19 @@ app.post("/dwn", async (req, res) => {
                 resolve(await a.dall(url, title, toFilename(title)))
             } else {
                 var file = fs.createWriteStream(`songs/${toFilename(title)}.mp3`);
-                var stream = ytdl(url, {filter: "audioonly"});
+                var stream = ytdl(url, { filter: "audioonly" });
 
-                stream.pipe(file);
+                stream.on("data", data => {
+                    file.write(data);
+                })
                 stream.on('end', () => {
+                    file.end();
                     console.log(`\x1b[32mDownloaded ${title}\x1b[0m`);
                     resolve(true);
+                });
+                stream.on('error', err => {
+                    console.log(`\x1b[31mError: ${err}\x1b[0m`);
+                    resolve(false);
                 });
             }
 
@@ -60,9 +71,9 @@ app.post("/dwn", async (req, res) => {
 
     function dwn() {
         var dsl = downloadProgessLimit;
-        if (unjson.type === "video") dsl = 1;
+        if (unjson.type === "video") dsl = Math.floor(downloadProgessLimit / 2);
         if (nowdwn !== dsl) {
-            download(unjson.videos[p], p).then(e => {
+            download(unjson.videos[p]).then(e => {
                 nowdwn--;
                 done++;
             });

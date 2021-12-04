@@ -1,6 +1,7 @@
 function dall(ref, title, filename) {
     return new Promise((resolve, reject) => {
         const fs = require('fs');
+        const uuid = require('uuid');
         const cp = require('child_process');
         const ytdl = require('ytdl-core');
         // const readline = require("readline");
@@ -17,6 +18,12 @@ function dall(ref, title, filename) {
                 total: Infinity
             },
         };
+
+        var videoID = uuid.v4();
+        var audioID = uuid.v4();
+
+        var vddone = false;
+        var addone = false;
 
         // Get audio and video stream going
         const audio = ytdl(ref, {
@@ -39,6 +46,29 @@ function dall(ref, title, filename) {
                     total
                 };
             });
+        
+        var raudio = fs.createWriteStream(`temp/${videoID}`);
+        var rvideo = fs.createWriteStream(`temp/${audioID}`);
+
+        video.pipe(rvideo);
+        audio.pipe(raudio);
+
+        video.on('end', () => {
+            rvideo.end();
+            vddone = true;
+        });
+
+        audio.on('end', () => {
+            raudio.end();
+            addone = true;
+        });
+
+        var k = setInterval(() => {
+            if (vddone && addone) {
+                clearInterval(k);
+                sff();
+            }
+        }, 500);
 
         // Get the progress bar going
         // const progressbar = setInterval(() => {
@@ -55,40 +85,51 @@ function dall(ref, title, filename) {
         //     readline.moveCursor(process.stdout, 0, -2);
         // }, 1000);
 
-        // Start the ffmpeg child process
-        const ffmpegProcess = cp.spawn(ffmpeg, [
-            // Remove ffmpeg's console spamming
-            '-loglevel', '0', '-hide_banner',
-            // 3 second audio offset
-            '-itsoffset', '3.0', '-i', 'pipe:3',
-            '-i', 'pipe:4',
-            // Rescale the video
-            '-vf', 'scale=1920:1080',
-            // Choose some fancy codes
-            '-c:v', 'libx265', '-x265-params', 'log-level=0',
-            '-c:a', 'flac',
-            // Define output container
-            '-f', 'matroska', 'pipe:5',
-        ], {
-            windowsHide: false,
-            stdio: [
-                /* Standard: stdin, stdout, stderr */
-                'inherit', 'inherit', 'inherit',
-                /* Custom: pipe:3, pipe:4, pipe:5 */
-                'pipe', 'pipe', 'pipe',
-            ],
-        });
-        ffmpegProcess.on('close', () => {
-            console.log(`\x1b[32mDownloaded ${title}\x1b[0m`);
-            resolve(true);
-        });
+        function sff() {
 
-        // Link streams
-        // FFmpeg creates the transformer streams and we just have to insert / read data
+            console.log(`\x1b[33mStart making video and audio to "${title}"\x1b[0m`);
 
-        audio.pipe(ffmpegProcess.stdio[3]);
-        video.pipe(ffmpegProcess.stdio[4]);
-        ffmpegProcess.stdio[5].pipe(fs.createWriteStream(`./videos/${filename}.mkv`));
+            // var rvd = fs.createReadStream(`temp/${videoID}`);
+            // var rad = fs.createReadStream(`temp/${audioID}`);
+
+            // Start the ffmpeg child process
+            const ffmpegProcess = cp.spawn(ffmpeg, [
+                // Remove ffmpeg's console spamming
+                '-loglevel', '0', '-hide_banner',
+                "-i", `temp/${videoID}`, "-i", `temp/${audioID}`, "-map", "0:v?", "-map", "1:a?", "-c:v", "copy", "-shortest", `videos/${filename}.mp4`,
+                // // 3 second audio offset
+                // '-itsoffset', '3.0', '-i', 'pipe:3',
+                // '-i', 'pipe:4',
+                // // Rescale the video
+                // '-vf', 'scale=1920:1080',
+                // // Choose some fancy codes
+                // '-c:v', 'libx265', '-x265-params', 'log-level=0',
+                // '-c:a', 'flac',
+                // // Define output container
+                // '-f', 'matroska', 'pipe:5',
+            ]);
+            ffmpegProcess.on('close', () => {
+                console.log(`\x1b[32mDownloaded ${title}\x1b[0m`);
+                fs.unlinkSync(`temp/${videoID}`);
+                fs.unlinkSync(`temp/${audioID}`);
+                resolve(true);
+            });
+
+            ffmpegProcess.stdout.on('data', data => {
+                console.log(`\x1b[33m${data.toString()}\x1b[0m`);
+            });
+
+            ffmpegProcess.stderr.on('data', data => {
+                console.log(`\x1b[31m${data.toString()}\x1b[0m`);
+            });
+
+            // Link streams
+            // FFmpeg creates the transformer streams and we just have to insert / read data
+
+            // rad.pipe(ffmpegProcess.stdio[3]);
+            // rvd.pipe(ffmpegProcess.stdio[4]);
+            // ffmpegProcess.stdio[5].pipe(fs.createWriteStream(`./videos/${filename}.mkv`));
+        }
     })
 }
 
