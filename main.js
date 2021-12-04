@@ -58,7 +58,7 @@ app.post("/dwn", async (req, res) => {
                     resolve(true);
                 });
                 stream.on('error', err => {
-                    console.log(`\x1b[31mError: ${err}\x1b[0m`);
+                    console.log(`\x1b[31mDownload ${title} Failed: ${err}\x1b[0m`);
                     resolve(false);
                 });
             }

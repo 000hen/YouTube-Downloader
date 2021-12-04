@@ -89,24 +89,11 @@ function dall(ref, title, filename) {
 
             console.log(`\x1b[33mStart making video and audio to "${title}"\x1b[0m`);
 
-            // var rvd = fs.createReadStream(`temp/${videoID}`);
-            // var rad = fs.createReadStream(`temp/${audioID}`);
-
             // Start the ffmpeg child process
             const ffmpegProcess = cp.spawn(ffmpeg, [
                 // Remove ffmpeg's console spamming
                 '-loglevel', '0', '-hide_banner',
-                "-i", `temp/${videoID}`, "-i", `temp/${audioID}`, "-map", "0:v?", "-map", "1:a?", "-c:v", "copy", "-shortest", `videos/${filename}.mp4`,
-                // // 3 second audio offset
-                // '-itsoffset', '3.0', '-i', 'pipe:3',
-                // '-i', 'pipe:4',
-                // // Rescale the video
-                // '-vf', 'scale=1920:1080',
-                // // Choose some fancy codes
-                // '-c:v', 'libx265', '-x265-params', 'log-level=0',
-                // '-c:a', 'flac',
-                // // Define output container
-                // '-f', 'matroska', 'pipe:5',
+                "-i", `temp/${videoID}`, "-i", `temp/${audioID}`, "-map", "0:v?", "-map", "1:a?", "-c:v", "copy", "-shortest", `videos/${filename}.mp4`
             ]);
             ffmpegProcess.on('close', () => {
                 console.log(`\x1b[32mDownloaded ${title}\x1b[0m`);
@@ -115,20 +102,14 @@ function dall(ref, title, filename) {
                 resolve(true);
             });
 
-            ffmpegProcess.stdout.on('data', data => {
-                console.log(`\x1b[33m${data.toString()}\x1b[0m`);
-            });
+            // ffmpeg's output
+            // ffmpegProcess.stdout.on('data', data => {
+            //     console.log(`\x1b[33m${data.toString()}\x1b[0m`);
+            // });
 
-            ffmpegProcess.stderr.on('data', data => {
-                console.log(`\x1b[31m${data.toString()}\x1b[0m`);
-            });
-
-            // Link streams
-            // FFmpeg creates the transformer streams and we just have to insert / read data
-
-            // rad.pipe(ffmpegProcess.stdio[3]);
-            // rvd.pipe(ffmpegProcess.stdio[4]);
-            // ffmpegProcess.stdio[5].pipe(fs.createWriteStream(`./videos/${filename}.mkv`));
+            // ffmpegProcess.stderr.on('data', data => {
+            //     console.log(`\x1b[31m${data.toString()}\x1b[0m`);
+            // });
         }
     })
 }
