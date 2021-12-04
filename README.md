@@ -2,6 +2,12 @@
 
 This is a node server that can catch youtube videos and save them to your computer, and with Chrome extension.
 
+## Features
+
+ * Download multiple YouTube/YouTube Music videos at once.
+ * Download YouTube/YouTube Music videos from a playlist.
+ * Download all your favortie YouTube Music songs.
+
 ## Installation
 
 _You can download the executable from the [release page](https://github.com/000hen/YouTube-Downloader/releases/latest)_
