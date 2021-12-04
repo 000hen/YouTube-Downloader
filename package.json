@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "test": "t",
-    "start": "node main.js"
+    "start": "node main.js",
+    "build": "nexe -r \"assents /**/*\" --build -o build/YouTube-Downloader-Server.exe"
   },
   "author": "Muisnow",
   "license": "ISC",

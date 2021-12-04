@@ -5,3 +5,4 @@ ffmpeg.exe*
 songs/
 videos/
 temp/
+build/
