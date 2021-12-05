@@ -11,7 +11,7 @@ This is a node server that can catch youtube videos and save them to your comput
 
 ## Installation
 
-_You can download the executable from the [release page](https://github.com/000hen/YouTube-Downloader/releases/latest)_
+_You can download the executable file from the [release page](https://github.com/000hen/YouTube-Downloader/releases/latest)_
 
  1. Download the repository.
  2. Install the packages with `npm install`.
@@ -20,6 +20,8 @@ _You can download the executable from the [release page](https://github.com/000h
  5. Enjoy!
 
 ## How to Download The Videos or Songs
+
+**Remember the videos/playlists/songs must be public.**
 
  0. Open the server.
  1. Open the videos in the main YouTube page or open the songs in the YouTube Music page.
