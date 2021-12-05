@@ -7,6 +7,7 @@ This is a node server that can catch youtube videos and save them to your comput
  * Download multiple YouTube/YouTube Music videos at once.
  * Download YouTube/YouTube Music videos from a playlist.
  * Download all your favortie YouTube Music songs.
+ * Intuitive download videos/songs tool.
 
 ## Installation
 
