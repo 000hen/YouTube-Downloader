@@ -25,6 +25,20 @@ _You can download the executable from the [release page](https://github.com/000h
  2. Click the extension icon in the top right corner (You may need to pin it).
  3. It will download the videos in "videos" folder or the songs in "songs" folder.
 
+Or the download button in the video page or song page.
+ 
+ * In YouTube video page:
+ ![YT-Video-Page-Button](https://cdn.discordapp.com/attachments/698551378745884835/916841755490545744/unknown.png)
+
+ * In YouTube Music playing song page:
+ ![YT-Music-Page-Button](https://cdn.discordapp.com/attachments/698551378745884835/916842535563956244/unknown.png)
+
+ * In YouTube Playlist page:
+ ![YT-Playlist-Page-Button](https://cdn.discordapp.com/attachments/698551378745884835/916842441536053248/unknown.png)
+
+ * In YouTube Music playlist page:
+ ![YT-Music-Playlist-Page-Button](https://cdn.discordapp.com/attachments/698551378745884835/916842636751556608/unknown.png)
+
 ## Some of Screenshots
 
 ![screen1](https://cdn.discordapp.com/attachments/698551378745884835/916478624809513020/unknown.png)
