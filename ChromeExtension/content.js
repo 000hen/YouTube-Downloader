@@ -187,7 +187,7 @@ window.addEventListener('load', e => {
         var l = location.href;
         if (l !== dfu) {
             dfu = l;
-            d.remove();
+            if (d) d.remove();
             hhj();
         }
     }, 500);
