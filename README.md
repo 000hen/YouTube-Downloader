@@ -45,7 +45,8 @@ Or the download button in the video page or song page.
 ## Some of Screenshots
 
 ![screen1](https://cdn.discordapp.com/attachments/698551378745884835/916478624809513020/unknown.png)
-![screen2](https://cdn.discordapp.com/attachments/698551378745884835/916479931981111317/unknown.png)
+![screen2](https://cdn.discordapp.com/attachments/698551378745884835/916479931981111317/unknown.png)(Above is the old version of the popup window)
+![screen2 new](https://cdn.discordapp.com/attachments/698551378745884835/949905933729951764/unknown.png)
 ![screen3](https://cdn.discordapp.com/attachments/698551378745884835/916480115096035338/unknown.png)
 
 ## Enjoy!
