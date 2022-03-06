@@ -14,7 +14,8 @@
       "service_worker": "background.js"
     },
     "action": {
-      "default_title": "YouTube Downloader"
+      "default_title": "YouTube Downloader",
+      "default_popup": "popup.html"
     },
   
     "permissions": [

@@ -11,6 +11,15 @@ function sendToServer(data) {
     return true;
 }
 
+// async function getCurrentTab() {
+//     let queryOptions = {
+//         active: true,
+//         currentWindow: true
+//     };
+//     let [tab] = await chrome.tabs.query(queryOptions);
+//     return tab;
+// }
+
 chrome.action.onClicked.addListener((tab) => {
     var c = confirm("Download Music/Playlist on this page?");
     if (c === true) {
