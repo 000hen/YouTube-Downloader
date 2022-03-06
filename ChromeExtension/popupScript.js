@@ -4,10 +4,11 @@ document.getElementById("d").addEventListener("click", () => {
         currentWindow: true
     }, (tabs) => {
         var currTab = tabs[0];
-        if (currTab ) {
+        if (currTab) {
             chrome.tabs.sendMessage(currTab.id, {
                 message: 'download'
             });
+            window.close();
         }
     });
 });
