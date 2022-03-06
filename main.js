@@ -6,6 +6,8 @@ const app = express();
 const port = 1524;
 const fs = require('fs');
 const downloadProgessLimit = 10;
+const uuid = require('uuid');
+const child_process = require('child_process');
 
 if (!fs.existsSync('temp')) {
     fs.mkdirSync('temp');
@@ -40,14 +42,14 @@ app.post("/dwn", async (req, res) => {
             var title = info.player_response.videoDetails.title;
             var author = info.player_response.videoDetails.author;
             var toFilename = string => string.replace(/\n/g," ").replace(/[<>:"/\\|?*\x00-\x1F]| +$/g,"").replace(/^(CON|PRN|AUX|NUL|COM[1-9]|LPT[1-9])$/, x => x + "_");
-            var wn = "";
-            if (unjson.type === "video") wn = "(It will get longer because you're trying to download video)";
-            console.log(`\x1b[33mDownloading ${title}, By ${author}... ${wn}\x1b[0m`);
+            console.log(`\x1b[33mDownloading ${title}, By ${author}...\x1b[0m`);
             if (unjson.type === "video") {
                 var a = require("./assents/download.js");
                 resolve(await a.dall(url, title, toFilename(title)))
             } else {
-                var file = fs.createWriteStream(`songs/${toFilename(title)}.mp3`);
+                var id = uuid.v4();
+                // var file = fs.createWriteStream(`songs/${toFilename(title)}.mp3`);
+                var file = fs.createWriteStream(`temp/${id}`);
                 var stream = ytdl(url, { filter: "audioonly" });
 
                 stream.on("data", data => {
@@ -55,6 +57,9 @@ app.post("/dwn", async (req, res) => {
                 })
                 stream.on('end', () => {
                     file.end();
+                    console.log(`\x1b[33mConverting ${title} from WebM to MP3...\x1b[0m`);
+                    child_process.execSync(`ffmpeg -y -loglevel 0 -hide_banner -i "temp/${id}" -acodec libmp3lame -ab 128k -ar 44100 -ac 2 "songs/${toFilename(title)}.mp3"`);
+                    fs.unlinkSync(`temp/${id}`);
                     console.log(`\x1b[32mDownloaded ${title}\x1b[0m`);
                     resolve(true);
                 });
