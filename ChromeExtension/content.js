@@ -1,4 +1,5 @@
 window.addEventListener('load', e => {
+    console.log('[YouTube-Downloader] Web script loaded.');
     chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
         if (request.message === "download") {
             if (location.hostname === "music.youtube.com") {
@@ -74,6 +75,7 @@ window.addEventListener('load', e => {
                 }
             }
         }
+        sendResponse(true);
     });
 
     var dfu = location.href;
@@ -195,7 +197,7 @@ window.addEventListener('load', e => {
 
     function sendMessage(videos = [], type = "video") {
         try {
-            chrome.runtime.sendMessage({
+            return chrome.runtime.sendMessage({
                 videos: videos,
                 type: type
             });

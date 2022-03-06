@@ -1,20 +1,17 @@
 function sendToServer(data) {
-    var settings = {
-        "async": true,
-        "crossDomain": true,
-        "url": "http://localhost:1524/dwn",
-        "method": "POST",
-        "headers": {
-            "content-type": "application/json"
-        },
-        "processData": false,
-        "data": JSON.stringify(data)
-    }
-
-    $.ajax(settings)
+    try {
+        fetch("http://localhost:1524/dwn", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "content-type": "application/json"
+            }
+        });
+    } catch (e) { };
+    return true;
 }
 
-chrome.browserAction.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener((tab) => {
     var c = confirm("Download Music/Playlist on this page?");
     if (c === true) {
         chrome.tabs.sendMessage(tab.id, {
