@@ -1,6 +1,6 @@
 {
   "name": "yds",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "scripts": [
       "build/**/*.js",
       "assents/*"
-    ]
+    ],
+    "outputPath": "build"
   }
 }

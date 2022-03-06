@@ -24,6 +24,11 @@ if (!fs.existsSync('songs')) {
 app.use(express.json());
 
 app.post("/dwn", async (req, res) => {
+    res.json({
+        code: 0,
+        message: "Check your console!"
+    });
+
     var nowdwn = 0;
     var done = 0;
     var unjson = req.body;
@@ -65,7 +70,7 @@ app.post("/dwn", async (req, res) => {
                 });
                 stream.on('error', err => {
                     file.end();
-                    fs.unlinkSync(`songs/${toFilename(title)}.mp3`);
+                    fs.unlinkSync(`temp/${id}`);
                     console.log(`\x1b[31mDownload ${title} Failed: ${err}\x1b[0m`);
                     if (errVds.findIndex(e => e === url) === -1) {
                         unjson.videos.push(url);
@@ -84,13 +89,22 @@ app.post("/dwn", async (req, res) => {
     function dwn() {
         var dsl = downloadProgessLimit;
         if (unjson.type === "video") dsl = Math.floor(downloadProgessLimit / 2);
-        if (nowdwn !== dsl) {
+        if (nowdwn < dsl) {
             download(unjson.videos[p]).then(e => {
                 nowdwn--;
                 done++;
+                if (done === unjson.videos.length) {
+                    if (errVds.length > 0) {
+                        console.log(`\x1b[31mDownloading Failed: ${errVds.length} videos\x1b[0m`);
+                        for (var video of errVds) {
+                            console.log(`\x1b[31mFailed: ${video}\x1b[0m`);
+                        }
+                    }
+                    console.log(`\x1b[32mDownloaded all file, in this session YouTube-Downloader downloaded ${p} file(s)\x1b[0m`);
+                }
             });
             nowdwn++;
-            p += 1;
+            p++;
         }
 
         if (p !== unjson.videos.length && done + 1 !== unjson.videos.length) {
@@ -98,10 +112,8 @@ app.post("/dwn", async (req, res) => {
         }
     }
     dwn();
-
-    res.json({code: 0, message: "Check your console!"});
 });
 
 app.listen(port, () => {
-    // console.log(`yds app listening at http://localhost:${port}`)
+    // console.log(`yds app listening at http://localhost:${port}`);
 })
